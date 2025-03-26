@@ -1,0 +1,58 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter - iPhone 16 Pro Max 1",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "deviceId": "54AAE7E9-DF8F-41F2-B3EB-42F03D7A1263",
+      "args": [
+        "--dart-define=ENV=dev",
+        "--dart-define=API_URL=https://api-dev.example.com",
+        "--dart-define=CLOUDINARY_CLOUD_NAME=duffsmyoy",
+        "--dart-define=CLOUDINARY_API_KEY=573133159853463",
+        "--dart-define=CLOUDINARY_API_SECRET=pfEi0cZCcO9bAzGDqw-F7lrHRiE"
+      ]
+    },
+    {
+      "name": "Flutter - iPhone 16 Pro Max 2",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "deviceId": "6C05DC4B-AB17-4F8D-9CBF-CE0739B115A3",
+      "args": [
+        "--dart-define=ENV=test",
+        "--dart-define=API_URL=https://api-test.example.com",
+        "--dart-define=CLOUDINARY_CLOUD_NAME=duffsmyoy",
+        "--dart-define=CLOUDINARY_API_KEY=573133159853463",
+        "--dart-define=CLOUDINARY_API_SECRET=pfEi0cZCcO9bAzGDqw-F7lrHRiE"
+      ]
+    },
+    {
+      "name": "Flutter - Prod",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define=ENV=prod",
+        "--dart-define=API_URL=https://api.example.com",
+        "--dart-define=CLOUDINARY_CLOUD_NAME=duffsmyoy",
+        "--dart-define=CLOUDINARY_API_KEY=573133159853463",
+        "--dart-define=CLOUDINARY_API_SECRET=pfEi0cZCcO9bAzGDqw-F7lrHRiE"
+      ]
+    },
+  ],
+  "compounds": [
+    {
+      "name": "Run on iPhone 1 & iPhone 2",
+      "configurations": [
+        "Flutter - iPhone 16 Pro Max 1",
+        "Flutter - iPhone 16 Pro Max 2"
+      ]
+    }
+  ]
+}
