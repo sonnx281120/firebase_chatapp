@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class ChangeScreenProvider extends ChangeNotifier {
+class ChatScreenProvider extends ChangeNotifier {
   final String email;
   final String uid;
   Timer? _debounceTimer;
@@ -19,12 +19,12 @@ class ChangeScreenProvider extends ChangeNotifier {
 
   final ScrollController scrollController = ScrollController();
 
-  factory ChangeScreenProvider.of(BuildContext context) => context.read();
+  factory ChatScreenProvider.of(BuildContext context) => context.read();
 
   final AuthService authService = AuthService();
   final ChatService chatService = ChatService();
 
-  ChangeScreenProvider({required this.email, required this.uid}) {
+  ChatScreenProvider({required this.email, required this.uid}) {
     messageController.addListener(checkInputNotEmpty);
   }
 

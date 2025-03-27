@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_chatapp/constant/app_router_enum.dart';
 import 'package:firebase_chatapp/router/navigator_service.dart';
-import 'package:firebase_chatapp/screens/chat_screen_provider.dart';
+import 'package:firebase_chatapp/screens/chat_screen/chat_screen_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +17,7 @@ class ChatScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return ChangeNotifierProvider(
       create: (_) =>
-          ChangeScreenProvider(email: receiver["email"], uid: receiver["uid"]),
+          ChatScreenProvider(email: receiver["email"], uid: receiver["uid"]),
       child: const _ContentWidget(),
     );
   }
@@ -28,7 +28,7 @@ class _ContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = ChangeScreenProvider.of(context);
+    final provider = ChatScreenProvider.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(provider.email),
@@ -43,7 +43,7 @@ class _ContentWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTypingIndicator(ChangeScreenProvider provider) {
+  Widget _buildTypingIndicator(ChatScreenProvider provider) {
     return StreamBuilder<DocumentSnapshot>(
         stream: provider.chatService.getTypingStatus(provider.uid),
         builder: (context, snapshot) {
@@ -66,7 +66,7 @@ class _ContentWidget extends StatelessWidget {
         });
   }
 
-  Widget _buildMessageList(ChangeScreenProvider provider) {
+  Widget _buildMessageList(ChatScreenProvider provider) {
     return StreamBuilder<QuerySnapshot>(
       stream: provider.chatService.getMessages(
           provider.authService.getCurrentUser()!.uid, provider.uid),
@@ -99,8 +99,7 @@ class _ContentWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageItem(
-      DocumentSnapshot doc, ChangeScreenProvider provider) {
+  Widget _buildMessageItem(DocumentSnapshot doc, ChatScreenProvider provider) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
     bool isMe = data["sendId"] == provider.authService.getCurrentUser()!.uid;
@@ -176,7 +175,7 @@ class _ContentWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageInput(ChangeScreenProvider provider) {
+  Widget _buildMessageInput(ChatScreenProvider provider) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 50, left: 20, right: 20),
       child: Column(

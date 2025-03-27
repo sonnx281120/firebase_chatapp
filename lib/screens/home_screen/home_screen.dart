@@ -1,29 +1,38 @@
 import 'package:firebase_chatapp/constant/app_router_enum.dart';
 import 'package:firebase_chatapp/router/navigator_service.dart';
-import 'package:firebase_chatapp/services/auth/auth_service.dart';
-import 'package:firebase_chatapp/services/chat/chat_service.dart';
+import 'package:firebase_chatapp/screens/home_screen/home_screen_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
-
-  final ChatService _chatService = ChatService();
-  final AuthService _authService = AuthService();
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+        create: (_) => HomeScreenProvider(), child: _ContentWidget());
+  }
+}
+
+class _ContentWidget extends StatelessWidget {
+  const _ContentWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = HomeScreenProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home page"),
       ),
       drawer: const MyDrawer(),
-      body: _buildUserList(),
+      body: _buildUserList(provider),
     );
   }
 
-  Widget _buildUserList() {
+  Widget _buildUserList(HomeScreenProvider provider) {
     return StreamBuilder(
-        stream: _chatService.getUsersStream(),
+        stream: provider.chatService.getUsersStream(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Text("Error");
@@ -34,14 +43,16 @@ class HomeScreen extends StatelessWidget {
 
           return ListView(
             children: snapshot.data!
-                .map<Widget>((userData) => _buildUserListItem(userData))
+                .map<Widget>(
+                    (userData) => _buildUserListItem(userData, provider))
                 .toList(),
           );
         });
   }
 
-  Widget _buildUserListItem(Map<String, dynamic> userData) {
-    if (userData["email"] != _authService.getCurrentUser()!.email) {
+  Widget _buildUserListItem(
+      Map<String, dynamic> userData, HomeScreenProvider provider) {
+    if (userData["email"] != provider.authService.getCurrentUser()!.email) {
       return UserTile(
           text: userData["email"],
           onTap: () {
@@ -85,13 +96,9 @@ class UserTile extends StatelessWidget {
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
-  void logout() {
-    final authService = AuthService();
-    authService.signout();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final provider = HomeScreenProvider.of(context);
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: Column(
@@ -132,7 +139,7 @@ class MyDrawer extends StatelessWidget {
             child: ListTile(
               title: const Text("L O G O U T"),
               leading: const Icon(Icons.logout),
-              onTap: logout,
+              onTap: provider.logout,
             ),
           ),
         ],
